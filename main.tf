@@ -10,17 +10,18 @@ terraform {
   }
 }
 
-resource "aws_instance" "app_server" {
-  ami             = "ami-085ad6ae776d8f09c" # Replace with your preferred AMI
-  instance_type   = "t3.micro"
-  key_name        = "var.key_name"
-  security_groups = ["project"]
+variable "key_name" {}
 
-  # SSH Connection Configuration
+resource "aws_instance" "app_server" {
+  ami             = "ami-085ad6ae776d8f09c"
+  instance_type   = "t3.micro"
+  key_name        = var.key_name
+  security_groups = [aws_security_group.project_sg.name]
+
   connection {
     type        = "ssh"
-    user        = "ec2-user"   # For Amazon Linux, use "ubuntu" for Ubuntu instances
-    private_key = file("C:/Users/ramag/Downloads/var.key_name.pem") # Corrected Path
+    user        = "ec2-user"
+    private_key = file("/var/lib/jenkins/.ssh/var.key_name.pem")
     host        = self.public_ip
   }
 
@@ -38,6 +39,18 @@ resource "aws_instance" "app_server" {
 
   tags = {
     Name = "Terraform-EC2"
+  }
+}
+
+resource "aws_security_group" "project_sg" {
+  name        = "project"
+  description = "Allow SSH and web traffic"
+  
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
