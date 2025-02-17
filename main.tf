@@ -14,7 +14,7 @@ resource "aws_instance" "app_server" {
   ami             = "ami-053a45fff0a704a47" # Replace with a valid AMI
   instance_type   = "t2.micro"
   key_name        = "var.key_name"
-  security_groups = ["sg-052f7fa9e79faa1f0"]
+  vpc_security_group_ids = ["sg-052f7fa9e79faa1f0"]
 
   provisioner "remote-exec" {
     inline = [
