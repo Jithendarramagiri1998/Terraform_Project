@@ -10,18 +10,22 @@ terraform {
   }
 }
 
-variable "key_name" {}
+# Define the variable without the 'var.' prefix
+variable "key_name" {
+  description = "The key name for the EC2 instance."
+  type        = string
+}
 
 resource "aws_instance" "app_server" {
-  ami             = "ami-085ad6ae776d8f09c"
+  ami             = "ami-085ad6ae776d8f09c"  # Replace with your preferred AMI
   instance_type   = "t3.micro"
-  key_name        = var.key_name
+  key_name        = var.key_name  # Correct usage of the variable
   security_groups = [aws_security_group.project_sg.name]
 
   connection {
     type        = "ssh"
     user        = "ec2-user"
-    private_key = file("/var/lib/jenkins/.ssh/var.key_name.pem")
+    private_key = file("/var/lib/jenkins/.ssh/var.key_name.pem")  # Corrected path
     host        = self.public_ip
   }
 
@@ -38,7 +42,7 @@ resource "aws_instance" "app_server" {
   }
 
   tags = {
-    Name = "Terraform-EC2"
+    Name = "jithendar"
   }
 }
 
