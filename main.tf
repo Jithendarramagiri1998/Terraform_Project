@@ -12,9 +12,9 @@ terraform {
 
 # Define the variable without the 'var.' prefix
 variable "key_name" {
-  description = "The key name for the EC2 instance."
-  type        = string
+  default = "var.key_name"
 }
+
 
 resource "aws_instance" "app_server" {
   ami             = "ami-085ad6ae776d8f09c"  # Replace with your preferred AMI
