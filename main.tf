@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket         = "your-terraform-state-bucket1998"  # Replace with your S3 bucket name
+    bucket         = "balll"  # Replace with your S3 bucket name
     key            = "terraform.tfstate"           # Path inside the bucket
     region         = "us-east-1"                   # Change if using a different AWS region
     encrypt        = true                          # Encrypts the state file
