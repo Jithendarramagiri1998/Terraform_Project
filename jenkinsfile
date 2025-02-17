@@ -14,10 +14,12 @@ pipeline {
 
         stage('Terraform Init & Apply') {
             steps {
-                sh '''
-                terraform init
-                terraform apply -auto-approve
-                '''
+                withCredentials([sshUserPrivateKey(credentialsId: 'aws-ec2-key', keyFileVariable: 'PRIVATE_KEY')]) {
+                    sh '''
+                    terraform init
+                    terraform apply -auto-approve
+                    '''
+                }
             }
         }
 
