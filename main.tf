@@ -1,36 +1,20 @@
-terraform {
-  backend "s3" {
-    bucket         = "balll"  # Replace with your S3 bucket name
-    key            = "terraform.tfstate"           # Path inside the bucket
-    region         = "us-east-1"                   # Change if using a different AWS region
-    encrypt        = true
-  }
-}
-
 provider "aws" {
   region = "us-east-1"
 }
 
-variable "key_name" {
-  type = string
-}
-
-variable "private_key" {
-  type = string
+terraform {
+  backend "s3" {
+    bucket = "ball"
+    key    = "terraform.tfstate"
+    region = "us-east-1"
+  }
 }
 
 resource "aws_instance" "app_server" {
-  ami             = "ami-085ad6ae776d8f09c"  # Replace with your preferred AMI
-  instance_type   = "t3.micro"
-  key_name        = var.key_name
-  security_groups = [aws_security_group.project_sg.name]
-
-  connection {
-    type        = "ssh"
-    user        = "ec2-user"  # Replace with your user (e.g., "ubuntu" for Ubuntu instances)
-    private_key = file(var.private_key)  # Reads the private key from the passed variable
-    host        = self.public_ip
-  }
+  ami             = "ami-053a45fff0a704a47" # Replace with a valid AMI
+  instance_type   = "t2.micro"
+  key_name        = "var.key_name"
+  security_groups = ["sg-052f7fa9e79faa1f0"]
 
   provisioner "remote-exec" {
     inline = [
@@ -46,18 +30,6 @@ resource "aws_instance" "app_server" {
 
   tags = {
     Name = "Terraform-EC2"
-  }
-}
-
-resource "aws_security_group" "project_sg" {
-  name        = "project"
-  description = "Allow SSH and web traffic"
-  
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
