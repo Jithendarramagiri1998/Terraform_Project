@@ -25,7 +25,7 @@ resource "aws_instance" "app_server" {
   connection {
     type        = "ssh"
     user        = "ec2-user"
-    private_key = file("/var/lib/jenkins/.ssh/var.key_name.pem")  # Corrected path
+    private_key = var.private_key  # Corrected path
     host        = self.public_ip
   }
 
