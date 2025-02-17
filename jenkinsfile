@@ -12,16 +12,16 @@ pipeline {
             }
         }
 
-        stage('Terraform Init & Apply') {
+         stage('Terraform Init & Apply') {
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'aws-ec2-key', keyFileVariable: 'PRIVATE_KEY')]) {
                     script {
                         // Write the private key to a temporary file for Terraform
                         writeFile(file: '/tmp/terraform-private-key.pem', text: "${PRIVATE_KEY}")
-                        
-                        // Run Terraform Apply with the private key path
+
+                        // Run Terraform commands
                         sh '''
-                            terraform init
+                            terraform init -reconfigure
                             terraform apply -auto-approve -var "private_key=/tmp/terraform-private-key.pem" -var "key_name=your-key-name"
                         '''
                     }
