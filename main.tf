@@ -1,3 +1,13 @@
+terraform {
+  backend "s3" {
+    bucket         = "your-terraform-state-bucket1998"  # Replace with your S3 bucket name
+    key            = "terraform.tfstate"           # Path inside the bucket
+    region         = "us-east-1"                   # Change if using a different AWS region
+    encrypt        = true                          # Encrypts the state file
+    dynamodb_table = "terraform-lock-table"        # Optional for state locking (recommended)
+  }
+}
+
 provider "aws" {
   region = "us-east-1"
 }
@@ -19,7 +29,7 @@ resource "aws_instance" "app_server" {
   connection {
     type        = "ssh"
     user        = "ec2-user"  # Replace with your user (e.g., "ubuntu" for Ubuntu instances)
-    private_key = file(var.private_key)  # This will read the private key from the temporary file passed as a variable
+    private_key = file(var.private_key)  # Reads the private key from the passed variable
     host        = self.public_ip
   }
 
