@@ -1,11 +1,4 @@
-# Use an official Nginx image as the base
-FROM nginx:alpine
-
-# Create an HTML file that will display "Hello, Dear"
-RUN echo '<!DOCTYPE html><html><body><h1>Hello, Dear</h1></body></html>' > /usr/share/nginx/html/index.html
-
-# Expose port 80
-EXPOSE 80
-
-# Run Nginx in the foreground
-CMD ["nginx", "-g", "daemon off;"]
+FROM tomcat:9.0
+COPY ./webapp.war /usr/local/tomcat/webapps/
+EXPOSE 8080
+CMD ["catalina.sh", "run"]
