@@ -2,30 +2,24 @@ provider "aws" {
   region = "us-east-1"
 }
 
-terraform {
-  backend "s3" {
-    bucket = "your-terraform-state-bucket1998"
-    key    = "terraform.tfstate"
-    region = "us-east-1"
-  }
-}
-
-# Define the variable without the 'var.' prefix
 variable "key_name" {
-  default = "var.key_name"
+  type = string
 }
 
+variable "private_key" {
+  type = string
+}
 
 resource "aws_instance" "app_server" {
   ami             = "ami-085ad6ae776d8f09c"  # Replace with your preferred AMI
   instance_type   = "t3.micro"
-  key_name        = var.key_name  # Correct usage of the variable
+  key_name        = var.key_name
   security_groups = [aws_security_group.project_sg.name]
 
   connection {
     type        = "ssh"
-    user        = "ec2-user"
-    private_key = var.private_key  # Corrected path
+    user        = "ec2-user"  # Replace with your user (e.g., "ubuntu" for Ubuntu instances)
+    private_key = file(var.private_key)  # This will read the private key from the temporary file passed as a variable
     host        = self.public_ip
   }
 
@@ -42,7 +36,7 @@ resource "aws_instance" "app_server" {
   }
 
   tags = {
-    Name = "jithendar"
+    Name = "Terraform-EC2"
   }
 }
 
