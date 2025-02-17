@@ -3,8 +3,7 @@ terraform {
     bucket         = "balll"  # Replace with your S3 bucket name
     key            = "terraform.tfstate"           # Path inside the bucket
     region         = "us-east-1"                   # Change if using a different AWS region
-    encrypt        = true                          # Encrypts the state file
-    dynamodb_table = "terraform-lock-table"        # Optional for state locking (recommended)
+    encrypt        = true
   }
 }
 
