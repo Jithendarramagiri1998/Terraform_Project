@@ -21,7 +21,7 @@ pipeline {
 
                         // Run Terraform commands
                         sh '''
-                            terraform init -reconfigure
+                        
                             terraform apply -auto-approve -var "private_key=/tmp/terraform-private-key.pem" -var "key_name=your-key-name"
                         '''
                     }
